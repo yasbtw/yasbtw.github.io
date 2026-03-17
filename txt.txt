@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--
+  --link-color: #5A67D3;
+  --link2-color: #6A6873;
+  --bg-color: #D0D0DB;
+  --bg-light-color: #E7E7ED;
+  --bg-dark-color: #aaaab7;
+  --main-bg-color: #4D4B57;
+  --sub-color: #6A6873;
+  --sub-light-color: #8E8D98;
+  --dark-color: #373540;
+  --light-color: white;
+  --lighten-color: #fffa;
+  --highlight-color: #fff09c;
+  shdaow #878787
+  pre #f4f4f4
+
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+let t = 0;
+const r = 1.8;
+function animate(){
+      document.documentElement.style.setProperty("--y", Math.sin(t) + "px")
+  document.documentElement.style.setProperty("--x", Math.cos(t) + "px");
+;
+  t += 0.05;
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+<!--
+  --link-color: #5A67D3;
+  --link2-color: #6A6873;
+  --bg-color: #D0D0DB;
+  --bg-light-color: #E7E7ED;
+  --bg-dark-color: #aaaab7;
+  --main-bg-color: #4D4B57;
+  --sub-color: #6A6873;
+  --sub-light-color: #8E8D98;
+  --dark-color: #373540;
+  --light-color: white;
+  --lighten-color: #fffa;
+  --highlight-color: #fff09c;
+  shdaow #878787
+  pre #f4f4f4
+
+-->
+<style>
+
+    :root {
+  --link-color: #5A67D3;
+  --bg-color: #181825;
+  --bg-light-color: #313244;
+  --bg-dark-color: #1e1e2e;
+  --main-bg-color: #4D4B57;
+  --sub-color: #6A6873;
+  --sub-light-color: #8E8D98;
+  --dark-color: #373540;
+  --text-color: white;
+  --lighten-color: #fffa;
+  --highlight-color: #f38ba8;
+  --shadow: #11131a; 
+}
+    :root{
+        --y: 0px;
+        --x: 0px;
+
+    }
+    * {
+            font-family: courier;
+      /*  font-family: "Liberation Mono", sans-serif;*/
+        box-sizing: border-box;
+        margin: 0;
+        border-radius: 3px;
+        color: var(--text-color);
+        text-decoration: none;
+    }
+
+    body {
+        
+     
+        /*background-image: url(assets/dot-grid.png);*/
+        background-color: var(--bg-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        height: 100%;
+    }
+
+    .container {
+        
+        word-wrap: break-word;
+        filter: drop-shadow(0px 0px 4px var(--shadow));
+        background-color: var(--bg-light-color);
+        width: 80%;
+    }
+
+    .Frame {
+        display: flex;
+        justify-content: space-between;
+        background-color: var(--bg-dark-color); /*#b9b7b7*/
+        border-radius: 3px 3px 0 0;
+        padding: 2px 5px;
+        text-transform: uppercase;
+
+    }
+    .Title,a{color: white;}
+    
+
+    pre {
+        
+        background-color: var(--bg-dark-color);
+        white-space: pre-wrap;
+        border: 5px solid transparent;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    article {padding: 15px;}
+    p {margin: 10px 0;}
+
+
+    span{
+        display: block;
+        position: relative;
+        color: var(--highlight-color);
+        font-weight: 600;
+      /*  top: var(--y, 0px);
+        left: var(--x, 0px);*/
+            transform: translate(var(--x), var(--y));
+    }
+body.crt::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+</style>
+
+<body class="crt">
+
+    <div class="container">
+        <div class="Frame">
+            <div class="Title">Blog</div>
+            <div class="Nav">
+                  <a href="#">Home</a>
+                <a href="#">Blogs</a>
+            </div>
+        </div>
+        <article>
+            <h2>15/3/2026 | Learning C++</h2>
+            
+            <p>Experience of learning <span>C++</span> yeah</p>
+            <p>C++: A Powerful Language for High-Performance Programming</p>
+            <p>The language was developed by <span>Bjarne Stroustrup</span> in the early 1980s as an extension of C</p>
+            <p>
+            </p>
+            <p><br>This is how you can write <span>Hello world</span> in C++</p>
+            <pre>
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
+</pre>
+<p>When i finished this i got pissed off tbh but all good i guess</p>
+        </article>
+    </div>
+    </div>
+</body>
+
+</html>

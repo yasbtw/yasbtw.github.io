@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>15/4/2026 | My first blog</title>
+</head>
+
+<!--
+  --link-color: #5A67D3;
+  --link2-color: #6A6873;
+  --bg-color: #D0D0DB;
+  --bg-light-color: #E7E7ED;
+  --bg-dark-color: #aaaab7;
+  --main-bg-color: #4D4B57;
+  --sub-color: #6A6873;
+  --sub-light-color: #8E8D98;
+  --dark-color: #373540;
+  --light-color: white;
+  --lighten-color: #fffa;
+  --highlight-color: #fff09c;
+  shdaow #878787
+  pre #f4f4f4
+
+-->
+<style>
+    :root {
+        --link-color: #5A67D3;
+        --bg-color: #181825;
+        --bg-light-color: #313244;
+        --bg-dark-color: #1e1e2e;
+        --text-color: white;
+        --highlight-color: #f38ba8;
+        --shadow: #11131a;
+    }
+
+    * {
+        font-family: courier;
+        /*font-family: "Liberation Mono", sans-serif;*/
+        box-sizing: border-box;
+        margin: 0;
+
+        border: none;
+        border-radius: 3px;
+        color: var(--text-color);
+        text-decoration: none;
+    }
+
+    body {
+
+        background-color: var(--bg-color);
+        background-image: radial-gradient(var(--bg-dark-color) 0px, transparent 4px);
+        background-size: 30px 30px;
+        background-position: -5px -5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        height: 100%;
+    }
+
+    .container {
+        word-wrap: break-word;
+        filter: drop-shadow(0px 0px 4px var(--shadow));
+        background-color: var(--bg-light-color);
+        width: 80%;
+    }
+
+    .Frame {
+        display: flex;
+        justify-content: space-between;
+        
+        
+        background-color: var(--bg-dark-color);
+        /*#b9b7b7*/
+        border-radius: 3px 3px 0 0;
+        padding: 3px 10px 0px 10px;
+        text-transform: uppercase;
+
+
+    }
+
+
+    button {
+        background-color: var(--bg-color);
+    }
+
+    pre {
+        background-color: var(--bg-dark-color);
+        white-space: pre-wrap;
+        border: 5px solid transparent;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 0.8rem;
+    }
+
+    article {
+        padding: 15px;
+    }
+
+    p {
+        margin: 15px 0;
+        font-size: 0.9rem;
+    }
+
+
+    span:not(pre span) {
+        display: inline-block;
+        color: var(--highlight-color);
+        font-weight: 600;
+        animation: orbit 3s linear infinite;
+    }
+
+
+/* just color tokens */
+
+    @keyframes orbit {
+        from {
+            transform: rotate(0deg) translateX(1.5px) rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg) translateX(1.5px) rotate(-360deg);
+        }
+    }
+
+    body.crt::before {
+        content: " ";
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(rgba(255, 255, 255, 0) 70%, rgba(0, 0, 0, 0.182) 50%);
+        /*, linear-gradient(90deg, rgba(255, 0, 0, 0), rgba(0, 255, 0, 0), rgba(0, 0, 255, 0)*/
+        background-size: 100% 2px, 3px 100%;
+        z-index: 100;
+        pointer-events: none;
+    }
+
+</style>
+
+<body class="crt">
+    
+    <div class="container">
+        <div class="Frame">
+            <div class="Title">yas's blog</div>
+            <div class="Nav">
+                <a href="#">Home</a>
+                <a href="#">Blogs</a>
+            </div>
+        </div>
+        <article>
+            <h2>My first blog 15/4/2026 </h2>
+            <p>Helloooo and welcome to my blog.</p>
+
+            <p>This is my <span>first post</span> here, so I guess I should explain what this website is about.
+                I made this blog mostly to share things I'm learning, random thoughts, and my experiences</p>
+
+            <p>I'm currently interested in programming, making websites, and experimenting with different things on my
+                computer.
+                Sometimes things break, sometimes they work, but I usually learn something from it.</p>
+
+            <p>I might also write about things I discover online, ideas I find interesting, or just random experiences
+                from my day.</p>
+
+
+            <pre>
+<code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout << "Welcome to my blog!" << std::endl;
+    return 0; 
+}</code>
+</pre>
+            <p>Anyway, this is just the <span>beginning</span>. Thanks for stopping by =)</p>
+        </article>
+    </div>
+    </div>
+    <script>
+        
+    </script>
+
+
+    <script src="js/main.js"></script>
+</body>
+</html>
