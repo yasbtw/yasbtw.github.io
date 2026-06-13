@@ -23,6 +23,7 @@
             align-items: center;
             flex-direction: column;
             height: 100vh;
+                overflow: hidden;
         }
 
         .background {
@@ -55,7 +56,7 @@
             display: grid;
             grid-template-columns: repeat(9, 30px);
 
-            gap: \0px;
+            gap: 3px;
             margin-top: 5px;
             padding: 5px;
             background: #efefef;
@@ -74,15 +75,15 @@
             border-radius: 0.2rem;
             transition: all 0.2s;
         }
-.cell:nth-child(9n + 3),
-.cell:nth-child(9n + 6) {
-  border-right: 3px solid rgb(166, 166, 166);
+        
+.cell[data-col="2"],
+.cell[data-col="5"] {
+  border-right: 3px solid rgb(115, 114, 114);
 }
 
-/* thicker horizontal lines */
-.cell:nth-child(n + 19):nth-child(-n + 27),
-.cell:nth-child(n + 46):nth-child(-n + 54) {
-  border-bottom: 3px solid rgb(166, 166, 166);
+.cell[data-row="2"],
+.cell[data-row="5"] {
+  border-bottom: 3px solid rgb(115, 114, 114);
 }
         h1 {color: #3c7ec48b;}
 
@@ -100,7 +101,7 @@
 
         button.restart {
             margin-top: 0px;
-            padding: 0px 20px;
+            padding: 0px 0px;
             font-size: 16px;
             cursor: pointer;
             border: 0;
@@ -119,6 +120,13 @@
         .num{
             cursor: pointer;
             border: 0;
+            padding: 4px;
+
+        }
+        .nav{
+            display: flex;
+            gap: 5px;
+            padding: 0;
 
         }
         
@@ -133,9 +141,7 @@
 
     
     </div>
-    <div class="game doodle" id="boardNumber">
-        
-        <h1>Numbers</h1>
+    <div class="game doodle, nav" id="boardNumber">
         <button class="restart" onclick="startGame()">⟳</button>
     </div>
     
