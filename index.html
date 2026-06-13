@@ -129,8 +129,28 @@
         .nav{
             display: flex;
             gap: 10px;
-            padding: 0 15px;
+            width: 100%;
 
+        }
+        .answer{
+            color:#3e75ff;
+        }
+        .finished{
+            color: #4599fc;
+            opacity: 0.55;
+        }
+        .hearts{
+            opacity: 0.5;
+            width: 100%;
+            font-size: 20px;
+        }
+
+        .gadget{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+                            text-align: center;
+                            gap: 5px;
         }
         
 </style>
@@ -144,9 +164,14 @@
 
     
     </div>
-    <div class="game doodle, nav" id="boardNumber">
+    <div class="game doodle, gadget">
+        <div class="nav" id="boardNumber">
         <button class="restart" onclick="startGame()">⟳</button>
+        </div>
+        <div id="hearts" class="hearts">💙💙💙</div>
     </div>
+    
+    
     
 </body>
 <script>
@@ -160,8 +185,13 @@ const boardNumber = document.getElementById("boardNumber")
 let selectedCell;
 let selectedBtn;
 let solution;
+let gameOver = false;
+let hearts = 3;
 function boxId(r, c) {
   return Math.floor(r / 3) * 3 + Math.floor(c / 3);
+}
+function loseGame(){
+     gameOver = true;
 }
 function canPlace(r, c, num) {
   const b = boxId(r, c);
@@ -238,11 +268,71 @@ function makePuzzle(sboard, removals = 20) {
     }
   }
 }
-function solve(r,c,answer){
-    if (board[r][c] != 0){return}
-    if (solution[r][c] == answer){
-        getButton(r,c).innerHTML = answer
+function getCounts() {
+    const counts = Array(10).fill(0);
+
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            const num = board[r][c];
+
+            if (num !== 0) {
+                counts[num]++;
+            }
+        }
     }
+
+    return counts;
+}
+function check(){
+        const counts = getCounts();
+    for (let num = 1; num <= 9; num++) {
+    if (counts[num] === 9) {
+
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+
+                if (board[r][c] === num) {
+                    const btn = getButton(r, c);
+
+  
+                    btn.classList.add("finished");
+                }
+            }
+        }
+
+    }
+}
+}
+function updateHeart(){
+        const heart = document.getElementById("hearts");
+       heart.textContent =
+        "💙".repeat(hearts) +
+        "🤍".repeat(3 - hearts);
+        if (hearts <= 0){
+            loseGame();
+        }
+        
+}
+function solve(r,c,answer){
+        if (gameOver){return}
+    if (board[r][c] != 0){return}
+    const btn = getButton(r,c);
+    if (solution[r][c] == answer){
+        btn.innerHTML = answer
+        btn.classList.add("answer")
+        btn.style.color = "#3e75ff";
+        board[r][c] = answer;
+    }else{
+        if (btn.textContent != answer){
+        btn.innerHTML = answer
+        btn.style.color = "red";
+
+        hearts--;
+            updateHeart();
+        }
+
+    }
+check();
     console.log(solution[r][c]);
     console.log(r,c)
 }
@@ -302,6 +392,7 @@ function fillCell(i = 0) {
             );
         }
 function select(r,c){
+    if (gameOver){return}
     let btn = getButton(r,c);
     if (selectedBtn){selectedBtn.classList.remove("selected")}
     selectedBtn = btn;
@@ -334,7 +425,9 @@ function select(r,c){
         }
 
         function startGame() {
-
+            hearts = 3;
+                        updateHeart();
+            gameOver = false;
   for (let i = 0; i < 9; i++) {
     rows[i].clear();
     cols[i].clear();
@@ -347,6 +440,7 @@ function select(r,c){
             makePuzzle(board);
             console.log(board);
             setupBoard();
+            check();
         }
         startGame();
 </script>
