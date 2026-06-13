@@ -152,6 +152,9 @@
                             text-align: center;
                             gap: 5px;
         }
+        .difficulty{
+            width: 90px;
+        }
         
 </style>
 <body>
@@ -162,15 +165,23 @@
 
         <div id="board"></div>
 
-    
+
     </div>
+
     <div class="game doodle, gadget">
         <div class="nav" id="boardNumber">
         <button class="restart" onclick="startGame()">⟳</button>
         </div>
+        
         <div id="hearts" class="hearts">💙💙💙</div>
+
     </div>
-    
+    <select id="difficulty" class="difficulty">
+
+    <option value="20">Easy</option>
+    <option value="40">Normal</option>
+    <option value="59">Hard</option>
+</select>
     
     
 </body>
@@ -182,11 +193,25 @@ const rows = Array.from({ length: 9 }, () => new Set());
 const cols = Array.from({ length: 9 }, () => new Set());
 const boxes = Array.from({ length: 9 }, () => new Set());
 const boardNumber = document.getElementById("boardNumber")
+const difficultySelect = document.getElementById("difficulty");
+let removals = 20;
+
+
+difficultySelect.addEventListener("change", () => {
+    removals = Number(difficultySelect.value);
+    startGame();
+});
+
+
 let selectedCell;
 let selectedBtn;
 let solution;
 let gameOver = false;
 let hearts = 3;
+
+
+
+
 function boxId(r, c) {
   return Math.floor(r / 3) * 3 + Math.floor(c / 3);
 }
@@ -245,7 +270,7 @@ function hasUniqueSolution(sboard) {
   return count === 1;
 }
 
-function makePuzzle(sboard, removals = 20) {
+function makePuzzle(sboard, removals) {
   const cells = [];
 
   for (let r = 0; r < 9; r++) {
@@ -425,6 +450,7 @@ function select(r,c){
         }
 
         function startGame() {
+
             hearts = 3;
                         updateHeart();
             gameOver = false;
@@ -437,7 +463,7 @@ function select(r,c){
             fillCell();
             solution = board.map(row => [...row]);
             console.log(solution);
-            makePuzzle(board);
+            makePuzzle(board, removals);
             console.log(board);
             setupBoard();
             check();
