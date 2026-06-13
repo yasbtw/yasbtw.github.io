@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+            @import url('https://fonts.googleapis.com/css2?family=Short+Stack&display=swap');
+
+        * {
+            margin: 0;
+            user-select: none;
+            font-family: 'Short Stack', cursive;
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+            color: rgb(0, 0, 0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .background {
+            z-index: -1;
+            position: fixed;
+            inset: -70%;
+            background: url(tea.png);
+            background-size: 112px;
+            background-repeat: repeat;
+            transform: rotate(-35deg);
+            opacity: 0.5;
+
+
+        }
+
+        .game {
+            border: #3c7ec450 solid 5px;
+            border-style: solid;
+            border-width: 15px 15px 15px 15px;
+            border-image: url("border.svg") 10 10 10 10 stretch stretch;
+            text-align: center;
+            background-color: white;
+            filter: drop-shadow(0px 0px 50px rgba(93, 93, 93, 0.417));
+            padding: 15px;
+            border-radius: 1rem;
+
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(9, 30px);
+
+            gap: \0px;
+            margin-top: 5px;
+            padding: 5px;
+            background: #efefef;
+
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            background: #d7d7d7;
+            border: 0 solid white;
+            color: rgb(61, 61, 61);
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 0.2rem;
+            transition: all 0.2s;
+        }
+.cell:nth-child(9n + 3),
+.cell:nth-child(9n + 6) {
+  border-right: 3px solid rgb(166, 166, 166);
+}
+
+/* thicker horizontal lines */
+.cell:nth-child(n + 19):nth-child(-n + 27),
+.cell:nth-child(n + 46):nth-child(-n + 54) {
+  border-bottom: 3px solid rgb(166, 166, 166);
+}
+        h1 {color: #3c7ec48b;}
+
+        .reveal {
+            background: rgb(255, 255, 255);
+            border: 2px solid white !important;
+        }
+
+        .flag {
+            background: #3c7ec450;
+        }
+
+        .mine {background: #c43c3e50 !important;}
+        .win {background: #50c43c50;}
+
+        button.restart {
+            margin-top: 0px;
+            padding: 0px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 0;
+
+        }
+
+        .status {
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 30px;
+            margin: 10px 0px;
+        }
+        .selected{
+            background-color: #3c7ec481;
+        }
+        .num{
+            cursor: pointer;
+            border: 0;
+
+        }
+        
+</style>
+<body>
+    <div class="background"></div>
+    <div class="game doodle">
+        
+        <h1>Sea Sudoku</h1>
+
+        <div id="board"></div>
+
+    
+    </div>
+    <div class="game doodle" id="boardNumber">
+        
+        <h1>Numbers</h1>
+        <button class="restart" onclick="startGame()">⟳</button>
+    </div>
+    
+</body>
+<script>
+
+    const boardElement = document.getElementById("board");
+    const board = Array.from({ length: 9 }, () => Array(9).fill(0));
+const rows = Array.from({ length: 9 }, () => new Set());
+const cols = Array.from({ length: 9 }, () => new Set());
+const boxes = Array.from({ length: 9 }, () => new Set());
+const boardNumber = document.getElementById("boardNumber")
+let selectedCell;
+let selectedBtn;
+let solution;
+function boxId(r, c) {
+  return Math.floor(r / 3) * 3 + Math.floor(c / 3);
+}
+function canPlace(r, c, num) {
+  const b = boxId(r, c);
+  return !rows[r].has(num) &&
+         !cols[c].has(num) &&
+         !boxes[b].has(num);
+}
+function hasUniqueSolution(sboard) {
+  let count = 0;
+  function solve(i = 0) {
+    if (count > 1) return;
+
+    if (i === 81) {
+      count++;
+      return;
+    }
+    const r = Math.floor(i / 9);
+    const c = i % 9;
+    if (sboard[r][c] !== 0) {
+      solve(i + 1);
+      return;
+    }
+
+    for (let num = 1; num <= 9; num++) {
+      let ok = true;
+      for (let k = 0; k < 9; k++) {
+        if (sboard[r][k] === num || sboard[k][c] === num) {
+          ok = false;
+          break;
+        }
+      }
+      const br = Math.floor(r / 3) * 3;
+      const bc = Math.floor(c / 3) * 3;
+      for (let i2 = 0; i2 < 3 && ok; i2++) {
+        for (let j2 = 0; j2 < 3; j2++) {
+          if (sboard[br + i2][bc + j2] === num) {
+            ok = false;
+            break;
+          }
+        }
+      }
+      if (ok) {
+        sboard[r][c] = num;
+        solve(i + 1);
+        sboard[r][c] = 0;
+      }
+    }
+  }
+
+  solve();
+  return count === 1;
+}
+
+function makePuzzle(sboard, removals = 20) {
+  const cells = [];
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      cells.push([r, c]);
+    }
+  }
+
+  while (removals > 0 && cells.length) {
+    const idx = Math.floor(Math.random() * cells.length);
+    const [r, c] = cells.splice(idx, 1)[0];
+
+    const backup = sboard[r][c];
+    sboard[r][c] = 0;
+
+    if (!hasUniqueSolution(sboard)) {
+      sboard[r][c] = backup; // revert if not unique
+    } else {
+      removals--;
+    }
+  }
+}
+function solve(r,c,answer){
+    if (board[r][c] != 0){return}
+    if (solution[r][c] == answer){
+        getButton(r,c).innerHTML = answer
+    }
+    console.log(solution[r][c]);
+    console.log(r,c)
+}
+
+for (let i=1; i<=9;i++){
+    let btn = document.createElement("button");
+    btn.className = "num";
+    btn.innerHTML = i;
+
+                    btn.addEventListener("pointerdown", (e) => {
+                        if (e.button === 0 || e.pointerType === "touch") { // left click
+                            solve(selectedCell.r,selectedCell.c,i)
+                        } else if (e.button === 2) { // right click
+                            e.preventDefault();
+
+                        }
+                    });
+    boardNumber.appendChild(btn);
+    
+}
+
+function fillCell(i = 0) {
+  if (i === 81) return true;
+
+  const r = Math.floor(i / 9);
+  const c = i % 9;
+  const b = boxId(r, c);
+
+  let nums = [1,2,3,4,5,6,7,8,9];
+
+  while (nums.length) {
+    const idx = Math.floor(Math.random() * nums.length);
+    const num = nums.splice(idx, 1)[0];
+
+    if (canPlace(r, c, num)) {
+      board[r][c] = num;
+
+      rows[r].add(num);
+      cols[c].add(num);
+      boxes[b].add(num);
+
+      if (fillCell(i + 1)) return true;
+
+      // backtrack
+      board[r][c] = 0;
+      rows[r].delete(num);
+      cols[c].delete(num);
+      boxes[b].delete(num);
+    }
+  }
+
+  return false;
+}
+        function getButton(r, c) {
+            return document.querySelector(
+                `[data-row="${r}"][data-col="${c}"]`
+            );
+        }
+function select(r,c){
+    let btn = getButton(r,c);
+    if (selectedBtn){selectedBtn.classList.remove("selected")}
+    selectedBtn = btn;
+    selectedCell = {r,c};
+    btn.classList.add("selected")
+}
+        function setupBoard() {
+          //  clearInterval();
+            boardElement.innerHTML = '';
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    const button = document.createElement("button");
+                    button.className = "cell";
+                    button.dataset.row = r;
+                    button.dataset.col = c;
+                    if (board[r][c] != 0){button.innerHTML = board[r][c]}
+
+                    button.addEventListener("pointerdown", (e) => {
+                        if (e.button === 0 || e.pointerType === "touch") { // left click
+                            select(r,c);
+                        } else if (e.button === 2) { // right click
+                            e.preventDefault();
+
+                        }
+                    });
+
+                    boardElement.appendChild(button);
+                }
+            }
+        }
+
+        function startGame() {
+
+  for (let i = 0; i < 9; i++) {
+    rows[i].clear();
+    cols[i].clear();
+    boxes[i].clear();
+  }
+
+            fillCell();
+            solution = board.map(row => [...row]);
+            console.log(solution);
+            makePuzzle(board);
+            console.log(board);
+            setupBoard();
+        }
+        startGame();
+</script>
+</html>
